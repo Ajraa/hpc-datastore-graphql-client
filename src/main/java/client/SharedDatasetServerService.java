@@ -2,6 +2,7 @@ package client;
 
 import client.base.GraphQLClient;
 import client.base.GraphQLException;
+import models.ConnectionParameters;
 import models.DataReturn;
 
 import static client.base.StaticStrings.*;
@@ -13,35 +14,39 @@ import java.util.Map;
 
 public class SharedDatasetServerService implements IDatasetServerService {
     private final GraphQLClient _client;
+    private final ConnectionParameters _params;
 
-    public SharedDatasetServerService(GraphQLClient client) {
+
+    public SharedDatasetServerService(GraphQLClient client, ConnectionParameters params) {
         _client = client;
+        _params = params;
     }
 
-    public SharedDatasetServerService(String endpoint) {
+    public SharedDatasetServerService(String endpoint, ConnectionParameters params) {
         _client = GraphQLClient.getInstance(endpoint);
+        _params = params;
     }
 
     @Override
-    public DataReturn getStatus(String uuid, Integer rX, Integer rY, Integer rZ, String version) throws IOException, GraphQLException {
+    public DataReturn getStatus() throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
-        vars.put(UUID, uuid);
-        vars.put(R_X_PARAM, rX);
-        vars.put(R_Y_PARAM, rY);
-        vars.put(R_Z_PARAM, rZ);
-        vars.put(VERSION_PARAM, version);
+        vars.put(UUID, _params.getUuid());
+        vars.put(R_X_PARAM, _params.getRx());
+        vars.put(R_Y_PARAM, _params.getRy());
+        vars.put(R_Z_PARAM, _params.getRz());
+        vars.put(VERSION_PARAM, _params.getVersion());
 
         return _client.CallAPI("SharedStatus", GET_SHARED_STATUS, vars, DataReturn.class);
     }
 
     @Override
-    public DataReturn readBlock(String uuid, Integer rX, Integer rY, Integer rZ, String version, long x, long y, long z, int time, int channel, int angle, String blocks) throws IOException, GraphQLException {
+    public DataReturn readBlock(long x, long y, long z, int time, int channel, int angle, String blocks) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
-        vars.put(UUID, uuid);
-        vars.put(R_X_PARAM, rX);
-        vars.put(R_Y_PARAM, rY);
-        vars.put(R_Z_PARAM, rZ);
-        vars.put(VERSION_PARAM, version);
+        vars.put(UUID, _params.getUuid());
+        vars.put(R_X_PARAM, _params.getRx());
+        vars.put(R_Y_PARAM, _params.getRy());
+        vars.put(R_Z_PARAM, _params.getRz());
+        vars.put(VERSION_PARAM, _params.getVersion());
         vars.put(X_PARAM, x);
         vars.put(Y_PARAM, y);
         vars.put(Z_PARAM, z);
@@ -54,13 +59,13 @@ public class SharedDatasetServerService implements IDatasetServerService {
     }
 
     @Override
-    public DataReturn writeBlock(String uuid, Integer rX, Integer rY, Integer rZ, String version, long x, long y, long z, int time, int channel, int angle, String blocks, String data) throws IOException, GraphQLException {
+    public DataReturn writeBlock(long x, long y, long z, int time, int channel, int angle, String blocks, String data) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
-        vars.put(UUID, uuid);
-        vars.put(R_X_PARAM, rX);
-        vars.put(R_Y_PARAM, rY);
-        vars.put(R_Z_PARAM, rZ);
-        vars.put(VERSION_PARAM, version);
+        vars.put(UUID, _params.getUuid());
+        vars.put(R_X_PARAM, _params.getRx());
+        vars.put(R_Y_PARAM, _params.getRy());
+        vars.put(R_Z_PARAM, _params.getRz());
+        vars.put(VERSION_PARAM, _params.getVersion());
         vars.put(X_PARAM, x);
         vars.put(Y_PARAM, y);
         vars.put(Z_PARAM, z);
@@ -74,13 +79,13 @@ public class SharedDatasetServerService implements IDatasetServerService {
     }
 
     @Override
-    public DataReturn getType(String uuid, Integer rX, Integer rY, Integer rZ, String version, int time, int channel, int angle) throws IOException, GraphQLException {
+    public DataReturn getType(int time, int channel, int angle) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
-        vars.put(UUID, uuid);
-        vars.put(R_X_PARAM, rX);
-        vars.put(R_Y_PARAM, rY);
-        vars.put(R_Z_PARAM, rZ);
-        vars.put(VERSION_PARAM, version);
+        vars.put(UUID, _params.getUuid());
+        vars.put(R_X_PARAM, _params.getRx());
+        vars.put(R_Y_PARAM, _params.getRy());
+        vars.put(R_Z_PARAM, _params.getRz());
+        vars.put(VERSION_PARAM, _params.getVersion());
         vars.put(TIME_PARAM, time);
         vars.put(CHANNEL_PARAM, channel);
         vars.put(ANGLE_PARAM, angle);

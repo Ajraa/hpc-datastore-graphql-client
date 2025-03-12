@@ -2,6 +2,7 @@ package client;
 
 import client.base.GraphQLClient;
 import client.base.GraphQLException;
+import models.ConnectionParameters;
 import models.DataReturn;
 
 import java.io.IOException;
@@ -14,27 +15,20 @@ import static client.base.StaticStrings.BLOCKS_PARAM;
 public class DatasetServerService implements IDatasetServerService {
     private final GraphQLClient _client;
 
-    public DatasetServerService(GraphQLClient client) {
+    public DatasetServerService(GraphQLClient client, ConnectionParameters params) {
         _client = client;
     }
 
     public DatasetServerService(String endpoint) {_client = GraphQLClient.getInstance(endpoint);}
 
-    public DataReturn getStatus() throws IOException, GraphQLException {
-        return this.getStatus(null, null, null, null, null);
-    }
-
     @Override
-    public DataReturn getStatus(String uuid, Integer rX, Integer rY, Integer rZ, String version) throws IOException, GraphQLException {
+    public DataReturn getStatus() throws IOException, GraphQLException {
         return _client.CallAPI("status", GET_STATUS, null, DataReturn.class);
     }
 
-    public DataReturn readBlock(long x, long y, long z, int time, int channel, int angle, String blocks) throws IOException, GraphQLException {
-        return this.readBlock(null, null, null, null, null, x, y, z, time, channel, angle, blocks);
-    }
 
     @Override
-    public DataReturn readBlock(String uuid, Integer rX, Integer rY, Integer rZ, String version, long x, long y, long z, int time, int channel, int angle, String blocks) throws IOException, GraphQLException {
+    public DataReturn readBlock(long x, long y, long z, int time, int channel, int angle, String blocks) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
         vars.put(X_PARAM, x);
         vars.put(Y_PARAM, y);
@@ -47,12 +41,8 @@ public class DatasetServerService implements IDatasetServerService {
         return _client.CallAPI("readBlock", READ_BLOCK, vars, DataReturn.class);
     }
 
-    public DataReturn writeBlock(long x, long y, long z, int time, int channel, int angle, String blocks, String data) throws IOException, GraphQLException {
-        return this.writeBlock(null, null, null, null, null, x, y, z, time, channel, angle, blocks, data);
-    }
-
     @Override
-    public DataReturn writeBlock(String uuid, Integer rX, Integer rY, Integer rZ, String version, long x, long y, long z, int time, int channel, int angle, String blocks, String data) throws IOException, GraphQLException {
+    public DataReturn writeBlock(long x, long y, long z, int time, int channel, int angle, String blocks, String data) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
         vars.put(X_PARAM, x);
         vars.put(Y_PARAM, y);
@@ -66,12 +56,8 @@ public class DatasetServerService implements IDatasetServerService {
         return _client.CallAPI("writeBlock", WRITE_BLOCK, vars, DataReturn.class);
     }
 
-    public DataReturn getType(int time, int channel, int angle) throws IOException, GraphQLException {
-        return this.getType(null, null, null, null, null, time, channel, angle);
-    }
-
     @Override
-    public DataReturn getType(String uuid, Integer rX, Integer rY, Integer rZ, String version, int time, int channel, int angle) throws IOException, GraphQLException {
+    public DataReturn getType(int time, int channel, int angle) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
         vars.put(TIME_PARAM, time);
         vars.put(CHANNEL_PARAM, channel);

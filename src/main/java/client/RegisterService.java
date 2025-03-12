@@ -2,6 +2,7 @@ package client;
 
 import client.base.GraphQLClient;
 import client.base.GraphQLException;
+import models.ConnectionParameters;
 import models.DataReturn;
 import models.QLDatasetDTO;
 
@@ -24,8 +25,8 @@ public class RegisterService {
 
     //START DATASERVER
 
-    public URI startServer( String uuid,  int rX, int rY, int rZ,
-                            String version, long timeout, String modeName) throws IOException, GraphQLException {
+    public ConnectionParameters startServer(String uuid, int rX, int rY, int rZ,
+                                            String version, long timeout, String modeName) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
         vars.put(UUID, uuid);
         vars.put(R_X_PARAM, rX);
@@ -35,12 +36,12 @@ public class RegisterService {
         vars.put(TIMEOUT_PARAM, timeout);
         vars.put(MODE_PARAM, modeName);
 
-        return _client.CallAPI("StartDataserver", START_DATASERVER, vars, URI.class);
+        return _client.CallAPI("StartDataserver", START_DATASERVER, vars, ConnectionParameters.class);
 
     }
 
     // StartWriteDataserver
-    public URI startServer( String uuid,  int rX, int rY, int rZ,
+    public ConnectionParameters startServer( String uuid,  int rX, int rY, int rZ,
                             String version, long timeout) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
         vars.put(UUID, uuid);
@@ -50,7 +51,7 @@ public class RegisterService {
         vars.put(VERSION_PARAM, version);
         vars.put(TIMEOUT_PARAM, timeout);
 
-        return _client.CallAPI("StartWriteDataserver", START_WRITE_DATASERVER, vars, URI.class);
+        return _client.CallAPI("StartWriteDataserver", START_WRITE_DATASERVER, vars, ConnectionParameters.class);
     }
 
     public UUID createEmptyDataset(QLDatasetDTO dataset) throws IOException, GraphQLException {
@@ -95,9 +96,10 @@ public class RegisterService {
         return _client.CallAPI("GetCommonMetadata", GET_COMMON_METADATA, vars, DataReturn.class);
     }
 
-    public DataReturn setCommonMetadata(String uuid) throws IOException, GraphQLException {
+    public DataReturn setCommonMetadata(String uuid, String metadata) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
         vars.put(UUID, uuid);
+        vars.put("metadata", metadata);
 
         return _client.CallAPI("SetCommonMetadata", SET_COMMON_METADATA, vars, DataReturn.class);
     }
@@ -147,7 +149,14 @@ public class RegisterService {
             "    mode: $mode,\n" +
             "    timeout: $timeout,\n" +
             "    versionParam: $versionParam\n" +
-            "  )\n" +
+            "  ) {" +
+            "uri\n" +
+            "uuid\n" +
+            "rX\n" +
+            "rY\n" +
+            "rZ\n" +
+            "version\n" +
+            "}\n" +
             "}";
 
     private static final String START_WRITE_DATASERVER = "query StartWriteDataserver(\n" +
@@ -165,7 +174,14 @@ public class RegisterService {
             "    resolutionParam: $resolutionParam\n" +
             "    timeout: $timeout\n" +
             "    uuid: $uuid\n" +
-            "  )\n" +
+            "  ) {" +
+            "uri\n" +
+            "uuid\n" +
+            "rX\n" +
+            "rY\n" +
+            "rZ\n" +
+            "version\n" +
+            "}\n" +
             "}\n";
 
     private static final String CREATE_EMPTY_DATASET = "mutation CreateEmptyDataset($datasetDTO: QLDatasetDTOInput!) {\n" +
