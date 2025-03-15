@@ -48,7 +48,7 @@ public class GraphQLClient {
     public <T> List<T> CallAPIList(String queryName, GraphQLQuery query, Class<T> responseType) throws IOException, GraphQLException {
         String jsonRequest = objectMapper.writeValueAsString(query);
 
-        MediaType mediaType = MediaType.parse("application/json"); // For OkHttp 3.x, use MediaType.parse()
+        MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, jsonRequest);
         Request request = new Request.Builder()
                 .url(graphQLEndpoint)
@@ -67,7 +67,7 @@ public class GraphQLClient {
     public <T> T CallAPI(String queryName, GraphQLQuery query, Class<T> responseType) throws IOException, GraphQLException {
         String jsonRequest = objectMapper.writeValueAsString(query);
 
-        MediaType mediaType = MediaType.parse("application/json"); // For OkHttp 3.x, use MediaType.parse()
+        MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, jsonRequest);
         Request request = new Request.Builder()
                 .url(graphQLEndpoint)
@@ -90,7 +90,8 @@ public class GraphQLClient {
         JavaType wrapperType = objectMapper.getTypeFactory()
                 .constructParametricType(GraphQLResponse.class, specificType);
 
-        return objectMapper.readValue(response.body().string(), wrapperType);
+        String res = response.body().string();
+        return objectMapper.readValue(res, wrapperType);
     }
 
     private <T> GraphQLResponse<List<T>>  DeserializeList(Response response, Class<T> responseType) throws IOException {

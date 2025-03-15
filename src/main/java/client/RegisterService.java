@@ -281,12 +281,12 @@ public class RegisterService {
             "  }\n" +
             "}";
 
-    private static final String ADD_CHANNELS = "mutation AddChannels($channels: String!, $uuid: String!) {\n" +
-            "  AddChannels(channels: $channels, uuid: $uuid) {\n" +
+    private static final String ADD_CHANNELS = "mutation AddChannels($CHANNEL: String!, $uuid: String!) {\n" +
+            "  AddChannels(CHANNEL: $CHANNEL, uuid: $uuid) {\n" +
             "    data\n" +
             "    returnType\n" +
             "  }\n" +
-            "}\n";
+            "}";
 
     private static final String GET_CHANNELS = "query GetChannels($uuid: String!) {\n" +
             "  GetChannels(uuid: $uuid) {\n" +
