@@ -18,7 +18,11 @@ public class GraphQLClient {
     private final ObjectMapper objectMapper;
 
     public static synchronized GraphQLClient getInstance(String graphQLEndpoint) {
-        if (singleton == null) singleton = new GraphQLClient(graphQLEndpoint);
+        if (singleton == null || !singleton.graphQLEndpoint.equals(graphQLEndpoint)) singleton = new GraphQLClient(graphQLEndpoint);
+        return singleton;
+    }
+
+    public static synchronized GraphQLClient getInstance() {
         return singleton;
     }
 

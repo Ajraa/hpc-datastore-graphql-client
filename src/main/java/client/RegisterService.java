@@ -82,9 +82,11 @@ public class RegisterService {
         return _client.CallAPI("DeleteDataset", DELETE_DATASET, vars, DataReturn.class);
     }
 
-    public DataReturn deleteDatasetVersions(String uuid) throws IOException, GraphQLException {
+    public DataReturn deleteDatasetVersions(String uuid, String version, String versions) throws IOException, GraphQLException {
         Map<String, Object> vars = new HashMap<>();
         vars.put(UUID, uuid);
+        vars.put(VERSION_PARAM, version);
+        vars.put(VERSION_PARAMS, versions);
 
         return _client.CallAPI("DeleteDatasetVersions", DELETE_DATASET_VERSION, vars, DataReturn.class);
     }
