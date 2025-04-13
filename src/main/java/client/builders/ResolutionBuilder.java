@@ -8,12 +8,14 @@ public class ResolutionBuilder {
     public ResolutionBuilder() {
         this.sb = new StringBuilder();
     }
-    public void name() {
+    public ResolutionBuilder name() {
         sb.append("name\n");
+        return this;
     }
 
-    public void rowPackedmatrix() {
+    public ResolutionBuilder rowPackedmatrix() {
         sb.append("rowPackedMatrix\n");
+        return this;
     }
 
     public String build() {

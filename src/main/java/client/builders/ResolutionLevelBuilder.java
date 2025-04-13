@@ -7,12 +7,14 @@ public class ResolutionLevelBuilder {
         sb = new StringBuilder();
     }
 
-    public void blockDimensions() {
+    public ResolutionLevelBuilder blockDimensions() {
         sb.append("blockDimensions\n");
+        return this;
     }
 
-    public void resolutions() {
+    public ResolutionLevelBuilder resolutions() {
         sb.append("resolutions\n");
+        return this;
     }
 
     public String build() {

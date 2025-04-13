@@ -2,6 +2,7 @@ package client;
 
 import client.base.GraphQLClient;
 import client.base.GraphQLException;
+import client.builders.DatasetBuilder;
 import models.ConnectionParameters;
 import models.DataReturn;
 import models.QLDatasetDTO;
@@ -37,7 +38,6 @@ public class RegisterService {
         vars.put(MODE_PARAM, modeName);
 
         return _client.CallAPI("StartDataserver", START_DATASERVER, vars, ConnectionParameters.class);
-
     }
 
     // StartWriteDataserver
@@ -73,6 +73,16 @@ public class RegisterService {
         vars.put(UUID, uuid);
 
         return _client.CallAPI("QueryDataset", QUERY_DATASET, vars, QLDatasetDTO.class);
+    }
+
+    public QLDatasetDTO queryDataset(String uuid, DatasetBuilder b) throws IOException, GraphQLException {
+        Map<String, Object> vars = new HashMap<>();
+        vars.put(UUID, uuid);
+
+        String query = new String(QUERY_DATASET_TEMPLATE);
+        String validQuery = query.replace("<BUILDER_DATA>", b.build());
+
+        return _client.CallAPI("QueryDataset", validQuery, vars, QLDatasetDTO.class);
     }
 
     public DataReturn deleteDataset(String uuid) throws IOException, GraphQLException {
@@ -239,6 +249,12 @@ public class RegisterService {
             "    }\n" +
             "    transformations\n" +
             "  }\n" +
+            "}";
+
+    private static final String QUERY_DATASET_TEMPLATE = "query QueryDataset($uuid: String!) {\n" +
+            "  QueryDataset(uuid: $uuid) {\n" +
+            "<BUILDER_DATA>" +
+            "}" +
             "}";
 
     private static final String DELETE_DATASET = "mutation DeleteDataset($uuid: String!) {\n" +

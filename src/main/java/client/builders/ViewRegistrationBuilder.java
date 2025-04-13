@@ -7,22 +7,26 @@ public class ViewRegistrationBuilder {
         sb = new StringBuilder();
     }
 
-    public void angle() {
+    public ViewRegistrationBuilder angle() {
         sb.append("angle\n");
+        return this;
     }
 
-    public void channel() {
+    public ViewRegistrationBuilder channel() {
         sb.append("channel\n");
+        return this;
     }
 
-    public void time() {
+    public ViewRegistrationBuilder time() {
         sb.append("time\n");
+        return this;
     }
 
-    public void transformations(ViewTransformBuilder b) {
+    public ViewRegistrationBuilder transformations(ViewTransformBuilder b) {
         sb.append("transformations {\n");
         sb.append(b.build());
         sb.append("}\n");
+        return this;
     }
 
     public String build() {

@@ -11,91 +11,110 @@ public class DatasetBuilder {
         return sb.toString();
     }
 
-    public void uuid() {
+    public DatasetBuilder uuid() {
         sb.append("uuid\n");
+        return this;
     }
 
-    public void angles() {
+    public DatasetBuilder angles() {
         sb.append("angles\n");
+        return this;
     }
 
-    public void channels() {
+    public DatasetBuilder channels() {
         sb.append("channels\n");
+        return this;
     }
 
-    public void timepoints() {
+    public DatasetBuilder timepoints() {
         sb.append("timepoints\n");
+        return this;
     }
 
-    public void dimensions() {
+    public DatasetBuilder dimensions() {
         sb.append("dimensions\n");
+        return this;
     }
 
-    public void voxelType() {
+    public DatasetBuilder voxelType() {
         sb.append("voxelType\n");
+        return this;
     }
 
-    public void voxelUnit() {
+    public DatasetBuilder voxelUnit() {
         sb.append("voxelUnit\n");
+        return this;
     }
 
-    public void voxelResolution() {
+    public DatasetBuilder voxelResolution() {
         sb.append("voxelResolution\n");
+        return this;
     }
 
-    public void compression() {
+    public DatasetBuilder compression() {
         sb.append("compression\n");
+        return this;
     }
 
-    public void label () {
+    public DatasetBuilder label () {
         sb.append("label\n");
+        return this;
     }
 
-    public void datasetType() {
+    public DatasetBuilder datasetType() {
         sb.append("datasetType\n");
+        return this;
     }
 
-    public void versions() {
+    public DatasetBuilder versions() {
         sb.append("versions\n");
+        return this;
     }
 
-    public void timepointIds() {
+    public DatasetBuilder timepointIds() {
         sb.append("timepointIds\n");
+        return this;
     }
 
-    public void angleResolution(ResolutionBuilder b) {
+    public DatasetBuilder angleResolution(ResolutionBuilder b) {
         sb.append("angleResolution {\n");
         sb.append(b.build());
         sb.append("}\n");
+        return this;
     }
 
-    public void channelResolution(ResolutionBuilder b) {
+    public DatasetBuilder channelResolution(ResolutionBuilder b) {
         sb.append("channelResolution {\n");
         sb.append(b.build());
         sb.append("}\n");
+        return this;
     }
 
-    public void timepointResolution(ResolutionBuilder b) {
+    public DatasetBuilder timepointResolution(ResolutionBuilder b) {
         sb.append("timepointResolution {\n");
         sb.append(b.build());
         sb.append("}\n");
+        return this;
     }
 
-    public void resolutionLevels(ResolutionLevelBuilder b) {
+    public DatasetBuilder resolutionLevels(ResolutionLevelBuilder b) {
         sb.append("resolutionLevels {\n");
         sb.append(b.build());
         sb.append("}\n");
+        return this;
     }
 
-    public void viewRegistration(ViewRegistrationBuilder b) {
+    public DatasetBuilder viewRegistration(ViewRegistrationBuilder b) {
         sb.append("viewRegistration {\n");
         sb.append(b.build());
         sb.append("}\n");
+        return this;
     }
 
-    public void transformations(ViewTransformBuilder b) {
+    public DatasetBuilder transformations(ViewTransformBuilder b) {
         sb.append("transformations {\n");
         sb.append(b.build());
         sb.append("}\n");
+        return this;
     }
 }

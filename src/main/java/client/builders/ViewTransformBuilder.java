@@ -7,12 +7,14 @@ public class ViewTransformBuilder {
         sb = new StringBuilder();
     }
 
-    public void name() {
+    public ViewTransformBuilder name() {
         sb.append("name\n");
+        return this;
     }
 
-    public void rowPackedMatrix() {
+    public ViewTransformBuilder rowPackedMatrix() {
         sb.append("rowPackedMatrix\n");
+        return this;
     }
 
     public String build() {
