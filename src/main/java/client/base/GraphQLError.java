@@ -35,5 +35,3 @@ public class GraphQLError {
         return "Error: " + message + "\nLocations: " + locations + "\nPath: " + path + "\nExtensions: " + extensions.toString();
     }
 }
-
-

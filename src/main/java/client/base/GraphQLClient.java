@@ -68,6 +68,25 @@ public class GraphQLClient {
         return gqlResponse.getData().getQueryResults().get(queryName);
     }
 
+    public <T> GraphQLResponse<T> CallAPI(GraphQLQuery query, Class<T> responseType) throws IOException, GraphQLException {
+        String jsonRequest = objectMapper.writeValueAsString(query);
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, jsonRequest);
+        Request request = new Request.Builder()
+                .url(graphQLEndpoint)
+                .post(body)
+                .build();
+        Response response = client.newCall(request).execute();
+
+        GraphQLResponse<T> gqlResponse = Deserialize(response, responseType);
+
+        if (gqlResponse.Errors != null && !gqlResponse.Errors.isEmpty())
+            throw new GraphQLException(gqlResponse.Errors);
+
+        return gqlResponse;
+    }
+
     public <T> T CallAPI(String queryName, GraphQLQuery query, Class<T> responseType) throws IOException, GraphQLException {
         String jsonRequest = objectMapper.writeValueAsString(query);
 
@@ -87,14 +106,44 @@ public class GraphQLClient {
         return gqlResponse.getData().getQueryResults().get(queryName);
     }
 
+    public GraphQLResponse<Object> CallAPI(GraphQLQuery query) throws IOException, GraphQLException {
+        String jsonRequest = objectMapper.writeValueAsString(query);
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, jsonRequest);
+        Request request = new Request.Builder()
+                .url(graphQLEndpoint)
+                .post(body)
+                .build();
+        Response response = client.newCall(request).execute();
+
+        GraphQLResponse<Object> gqlResponse = Deserialize(response);
+
+        if (gqlResponse.Errors != null && !gqlResponse.Errors.isEmpty())
+            throw new GraphQLException(gqlResponse.Errors);
+
+        return gqlResponse;
+    }
+
     private <T> GraphQLResponse<T>  Deserialize(Response response, Class<T> responseType) throws IOException {
         assert response.body() != null;
+        String res = response.body().string();
 
         JavaType specificType = objectMapper.getTypeFactory().constructType(responseType);
         JavaType wrapperType = objectMapper.getTypeFactory()
                 .constructParametricType(GraphQLResponse.class, specificType);
 
+        return objectMapper.readValue(res, wrapperType);
+    }
+
+    private  GraphQLResponse<Object>  Deserialize(Response response) throws IOException {
+        assert response.body() != null;
         String res = response.body().string();
+
+        JavaType specificType = objectMapper.getTypeFactory().constructType(Object.class);
+        JavaType wrapperType = objectMapper.getTypeFactory()
+                .constructParametricType(GraphQLResponse.class, specificType);
+
         return objectMapper.readValue(res, wrapperType);
     }
 
